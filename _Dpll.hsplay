@@ -1,0 +1,36 @@
+-- Haskell Playground 1.0
+not True
+True
+elem 3 [1,2,3]
+negateLiteral (Pos 4)
+filter
+
+c1 = [[Pos 1, Neg 1]]
+
+dpll c1
+
+Pos 1
+
+test = [[Pos 1],[Neg 1]]
+
+not_horn = [
+ [Neg 1],
+ [Pos 2, Neg 3, Neg 4],
+ [Neg 2, Neg 4],
+ [Pos 3],
+ [Pos 4],
+ [Neg 2,Pos 1]
+ ]
+
+horn = [
+ [Pos 1],
+ [Pos 2],
+ [Neg 2, Neg 3, Pos 4],
+ [Pos 3, Neg 2],
+ [Neg 4]
+ ]
+
+dpll test
+dpll horn
+
+reduceClauses (Pos 1) test
