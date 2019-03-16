@@ -2,17 +2,24 @@ module Dpll where
   data Literal = Pos Int | Neg Int deriving (Eq, Show)
   type Clause = [Literal]
   
-  dpll :: [Clause] -> Bool
-  dpll [] = True
-  dpll clauses 
-    | containsEmptyClause clauses = False
-    | containsAtomic clauses= dpll (reduceClauses atom clauses)
-    | otherwise = (dpll (reduceClauses first clauses)) || 
-                  (dpll (reduceClauses firstNeg clauses))
-                  
-      where atom = head (getAtomicClauses clauses)
-            first = (head . head) clauses
-            firstNeg = negateLiteral first
+  dpll :: [Clause] -> (Bool, [Literal])
+  dpll [] = (True, [])
+  dpll clauses = dpll' [] clauses 
+  
+  dpll' :: [Literal] -> [Clause] -> (Bool, [Literal])
+  dpll' solution [] = (True, solution)
+  dpll' solution clauses 
+            | [] `elem` clauses = (False, solution)
+            | containsAtomic clauses = dpll' (atom:solution) (reduceClauses atom clauses)
+            | otherwise =      if (fst redPos) then redPos
+                          else (if (fst redNeg) then redNeg
+                          else (False, solution))
+              where atom = head (getAtomicClauses clauses)
+                    lit    = (head . head) clauses
+                    notLit = negateLiteral lit
+                    redPos :: (Bool, [Literal])
+                    redPos = (dpll' (lit   :solution) (reduceClauses    lit  clauses)) 
+                    redNeg = (dpll' (notLit:solution) (reduceClauses notLit  clauses))
 
   negateLiteral :: Literal -> Literal
   negateLiteral (Pos x) = Neg x
@@ -23,10 +30,6 @@ module Dpll where
   removeLiteral l (x:xs)
     | x == l    =     removeLiteral l xs
     | otherwise = x : removeLiteral l xs
-      
-  containsEmptyClause :: [Clause] -> Bool
-  containsEmptyClause [] = False
-  containsEmptyClause (x:xs) = (length x == 0) || containsEmptyClause xs
   
   getAtomicClauses :: [Clause] -> [Literal]
   getAtomicClauses clauses = [head clause | clause <- clauses, length clause == 1]
@@ -43,3 +46,8 @@ module Dpll where
           | elem l x = reduceSat l xs
           | otherwise = x : reduceSat l xs
          reduceUnSat l = map (removeLiteral (negateLiteral l))
+  
+  main :: IO() -> [Char]      
+  main = do
+    let unsat = [[Pos 1, Pos 2], [Neg 1, Neg 2]]
+    return (show (dpll unsat))
