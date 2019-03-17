@@ -47,7 +47,3 @@ module Dpll where
           | otherwise = x : reduceSat l xs
          reduceUnSat l = map (removeLiteral (negateLiteral l))
   
-  main :: IO() -> [Char]      
-  main = do
-    let unsat = [[Pos 1, Pos 2], [Neg 1, Neg 2]]
-    return (show (dpll unsat))

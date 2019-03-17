@@ -1,4 +1,4 @@
-module DpllCli where
+module Main where
   import Parser
   import IntDpll
   import System.Environment (getArgs)
@@ -16,7 +16,8 @@ module DpllCli where
       let problem = parseDpll contents
       do 
         let Just clauses = problem
-        let (satisfiable, solution) = dpll clauses
+        let clean = [c | c <- clauses, (not . null) c]
+        let (satisfiable, solution) = dpll clean
         if satisfiable
         then do 
           putStrLn "Satisfiable:"

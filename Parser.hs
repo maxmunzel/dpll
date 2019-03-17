@@ -10,6 +10,7 @@ module Parser (parseDpll) where
   parseDpll' _    _    (Error _:_)     = Nothing
   parseDpll' cacc lacc (EOF:xs)        = Just (lacc : cacc)
   parseDpll' cacc lacc (Newline:xs)    = parseDpll' (lacc:cacc) []       xs
+  parseDpll' cacc lacc (Literal 0: xs) = parseDpll' cacc        lacc     xs -- ignore 0s
   parseDpll' cacc lacc (Literal x: xs) = parseDpll' cacc        (x:lacc) xs
  
   
@@ -18,6 +19,7 @@ module Parser (parseDpll) where
   dpllex [] = [EOF]
   dpllex (x:xs)
     | x == 'c'                = dpllex (skipUntilNewline xs)
+    | x == 'p'                = dpllex (skipUntilNewline xs)
     | x == '\n'               = Newline:(dpllex xs)
     | x `elem` '-':['0'..'9'] = num : dpllex rest
     | x `elem` " \t"          = dpllex xs
