@@ -9,10 +9,13 @@ x-last-ide-version: HfM1.6.1
 
 executable DPLL
     build-depends:
-        base -any
+        base -any,
+        text -any
     default-language: Haskell2010
     other-modules:
-        Dpll
         IntDpll
+        Dpll
+        DpllCli
+        Parser
         DpllLite
 
