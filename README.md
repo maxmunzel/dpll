@@ -5,6 +5,7 @@ A simple SAT-Solver written in Haskell.
 ## Usage
 
 ```bash
+$ git clone git@github.com:maxmunzel/dpll.git
 $ cd dpll
 $ cabal build
 $ ./dist/build/dpll/dpll [filename]
@@ -34,5 +35,5 @@ Satisfiable:
 
 ## Performance
 
-As this is just intended for me to get warm with haskell, there are currently no real optimizations in place so problems with over 100-200 clauses may take some of time.
+As this is just intended for me to get warm with haskell so there are currently no real optimizations in place. Therefor problems with over 100-200 clauses may take some of time.
 If you need a high performance solution for big problems, consider `z3` or `miniSAT`. For small-ish problems, it performs fine though.
