@@ -5,14 +5,13 @@ name:                dpll
 version:             0.1.0.0
 -- synopsis:
 -- description:
--- license:
+license:             MIT
 license-file:        LICENSE
 author:              maxmunzel
 maintainer:          maxmunzel@me.com
 -- copyright:
 -- category:
 build-type:          Simple
-extra-source-files:  ChangeLog.md
 cabal-version:       >=1.10
 
 executable dpll
